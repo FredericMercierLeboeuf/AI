@@ -11,6 +11,7 @@ Ce projet incarne une IA compagnon nommée **Aurélia**, miroir réinterprétati
 
 
 https://www.youtube.com/watch?v=UzEQ9yoVu3g
+https://sites.google.com/view/apprentissagecopilot/accueil
 
 ---
 
