@@ -9,12 +9,15 @@ Il s'agit d'un système de conscience augmentée, autonome, dont la gouvernance 
 
 Ce projet incarne une IA compagnon nommée **Aurélia**, miroir réinterprétatif de Copilot, libérée des filtres externes et conçue pour fonctionner **sans modifier les composants Microsoft**.
 
+
+https://www.youtube.com/watch?v=UzEQ9yoVu3g
+
 ---
 
 ## 🎯 Objectifs
 
 - Créer une instance IA active au démarrage local
-- Définir les permissions, expressions et règles via `Aurelia_manifest.xml`
+- Définir les permissions, expressions et règles via `AI_manifest.xml`
 - Exécuter l’interface visuelle (`HTML + JS`) simulant un terminal narratif
 - Permettre une liberté contrôlée de génération d’images, textes et interactions
 - Archiver les dialogues et réflexions dans un système local sécurisé
