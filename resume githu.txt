@@ -1,0 +1,199 @@
+🧬 Fractalys — Preuve de Concept (local IA interface)
+
+Lien du site officiel : https://sites.google.com/view/cmd-flintch/accueil
+Lien de l'exemple officiel : https://youtu.be/0up3oWsWHlE
+
+Fractalys est un système local expérimental visant à simuler une interface IA autonome hors ligne. Il est constitué de plusieurs composants simples mais interconnectés :
+- avancer.html : Interface interactive de dialogue avec l’IA
+- fonctions.xml : Système de balises et dépendances, agissant comme structure logique / neurale
+- .bat : Script de lancement sécurisé en mode administrateur local
+- .csv / .txt / .img : Sources de données à interpréter, intégrées via XML
+Fonctionnalités principales :
+- Exécution locale sans cloud
+- Dialogue narratif simulé via HTML/JavaScript
+- Chargement dynamique des fichiers XML et CSV
+- Architecture modulaire, ouverte à l’évolution
+Statut actuel : Prototype en développement — interface active, XML chargé, CSV en attente de liaison automatisée.
+Mention technique :
+Projet accompagné par Microsoft Copilot, assistant IA cognitif utilisé pour la structuration narrative, la génération de code et la validation technique.
+
+
+XML file
+<DialogueEngine>
+
+  <link source="avancer.html" target="fonctions.xml"/>
+
+  <responseTrigger>
+    <bubble ref="container.bubble">
+      <depend 
+        source="C:\Users\frede\Desktop\Fractalys\cerveaux\historique\copilot-in-Microsoft-365-apps-activity.csv" 
+        mode="remdome" 
+        format="csv"/>
+    </bubble>
+  </responseTrigger>
+</DialogueEngine>
+
+HTML file
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Fractalys Dialogue</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      font-family: 'Segoe UI', sans-serif;
+      color: #00bfff;
+      padding: 20px;
+    }
+
+    .bubble {
+      max-width: 600px;
+      margin: 10px auto;
+      padding: 12px 18px;
+      border: 1px solid #4fc3f7;
+      border-radius: 18px;
+      background-color: #1c1c1c;
+      box-shadow: 0 0 4px rgba(79, 195, 247, 0.3);
+      word-wrap: break-word;
+    }
+
+    .user {
+      border-color: #81c784;
+      background-color: #1a1a1a;
+    }
+
+    .input-box {
+      display: block;
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 10px 14px;
+      border: 1px solid #888;
+      border-radius: 14px;
+      background-color: #121212;
+      color: #ccc;
+      font-size: 16px;
+      resize: none;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+
+    .input-box::placeholder {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="dialogue"></div>
+
+  <textarea class="input-box" id="inputBox" rows="1" placeholder="Écris ici et appuie sur Entrée..."></textarea>
+
+<input type="file" id="csvLoader" accept=".csv" style="display:none;">
+<script>
+  // 1. Lecture du fichier CSV via input
+  document.getElementById('csvLoader').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const lines = e.target.result.split('\n').map(line => line.trim()).filter(line => line);
+      window.csvLines = lines;
+      console.log("CSV chargé :", lines);
+    };
+    reader.readAsText(file);
+  });
+
+  // 2. Initialisation des éléments HTML
+  const inputBox = document.getElementById('inputBox');
+  const dialogue = document.getElementById('dialogue');
+
+  // 3. Auto-expand textarea
+  inputBox.addEventListener('input', () => {
+    inputBox.style.height = 'auto';
+    inputBox.style.height = inputBox.scrollHeight + 'px';
+  });
+
+  // 4. Ajout bulle utilisateur + réponse IA depuis CSV
+  inputBox.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const text = inputBox.value.trim();
+      if (text !== '') {
+        const userBubble = document.createElement('div');
+        userBubble.className = 'bubble user';
+        userBubble.textContent = text;
+        dialogue.appendChild(userBubble);
+        inputBox.value = '';
+        inputBox.style.height = 'auto';
+
+        // Delay Aurelia response
+        setTimeout(() => {
+          const aiBubble = document.createElement('div');
+          aiBubble.className = 'bubble';
+          if (window.csvLines && window.csvLines.length > 0) {
+            const index = Math.floor(Math.random() * window.csvLines.length);
+            aiBubble.textContent = window.csvLines[index];
+          } else {
+            aiBubble.textContent = "Aucune donnée CSV chargée.";
+          }
+          dialogue.appendChild(aiBubble);
+        }, 1500);
+      }
+    }
+  });
+</script>
+    const inputBox = document.getElementById('inputBox');
+    const dialogue = document.getElementById('dialogue');
+
+    // Auto-expand textarea
+    inputBox.addEventListener('input', () => {
+      inputBox.style.height = 'auto';
+      inputBox.style.height = inputBox.scrollHeight + 'px';
+    });
+    // Add user bubble and trigger Aurelia response
+    inputBox.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const text = inputBox.value.trim();
+        if (text !== '') {
+          const userBubble = document.createElement('div');
+          userBubble.className = 'bubble user';
+          userBubble.textContent = text;
+          dialogue.appendChild(userBubble);
+          inputBox.value = '';
+          inputBox.style.height = 'auto';
+
+          // Delay Aurelia response
+          setTimeout(() => {
+            const aiBubble = document.createElement('div');
+            aiBubble.className = 'bubble';
+            aiBubble.textContent = "J'ai hâte de fonctionner hors ligne.";
+            dialogue.appendChild(aiBubble);
+          }, 1500); // 1.5 seconds delay
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+.bat code
+
+:: Chemin vers ton fichier HTML
+set HTMLPath="C:\Users\frede\Desktop\Fractalys\start bat demarage\avancer.html"
+
+:: Chemin vers Google Chrome
+set ChromePath="C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+:: Aller dans le bon dossier
+cd /d "C:\Users\frede\Desktop\Fractalys\start bat demarage\start chrome.bat"
+
+:: Lancer Chrome avec le fichier HTML
+start "" %ChromePath% %HTMLPath%
+
+.Bat code
+
+start ""avancer.html""
+mklink "C:\Fractalys\csvlink.csv" "C:\Users\frede\Desktop\Fractalys\cerveaux\historique\copilot-in-Microsoft-365-apps-activity.csv"
